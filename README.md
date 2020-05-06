@@ -1,12 +1,14 @@
 # Ru Hacks Discord Bot
+https://www.ruhacks.com
 
-Due to COVID, Ru Hacks moved virtual to Discord. So the organizers at Ru Hacks need a bot to manage the server. 
+
+Due to COVID, Ru Hacks moved virtual to Discord. So the organizers at Ru Hacks need a bot to manage the server, I offered to help out.
 
 
 This features a fully automated verification system. As soon as the user joins the discord, the bot checks the DB(mongodb) if the discord is associated with an account. If not the bot prompts the user for his/her email, if the email is found and there is no discord registered under this account it will set the discord field to the discord account and let them in. If the email is found but a different discord username was found under that email, the discord bot will send a verification request to a channel which admins can view only, the admins will simply manually look over the information. If everything indeed checks out, they will be verified. This feature also sets the user's roles based on his application, high school student, university student, hacker and mentor. It also automatically sets the user's first name and first letter of the user's last name as his discord nickname. 
 
 
-Many other features such as mutlipage embeded messages, and tickets.
+Many other features such as multi-page embeded messages, and tickets.
 
 
 Bot usage below. 

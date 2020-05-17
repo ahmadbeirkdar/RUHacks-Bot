@@ -35,7 +35,7 @@ async def on_member_join(member):
         f'Hi {member.name}, welcome to the Ru Hacks Discord.'
     )
     logging.warning(f'{member} joined')
-    db = client["dbot"]
+    db = client["test"]
     col = db["users"]
     flag = False
     for i in col.find():
@@ -195,7 +195,7 @@ async def done(ctx):
     role_it = discord.utils.get(ctx.guild.roles, id=698220612962746408)
     if role_org in ctx.author.roles or role_major in ctx.author.roles or role_mod in ctx.author.roles or role_mentor in ctx.author.roles or role_it in ctx.author.roles:
         if(ctx.channel.category_id == 703675272666546226):
-            category = bot.get_channel(703675297769324580)
+            category = bot.get_channel(711388661677031495)
             await ctx.channel.edit(category=category)
             await ctx.channel.set_permissions(ctx.guild.default_role, read_messages=False, send_messages=False)
             for i in ctx.channel.members:
@@ -211,7 +211,7 @@ async def check(ctx, email):
     if not isinstance(ctx.channel, discord.channel.DMChannel):
         await ctx.send("Private command only")
     else:
-        db = client["dbot"]
+        db = client["test"]
         col = db["users"]
         channel = bot.get_channel(706593175577428030)
         flag = False
@@ -289,7 +289,7 @@ async def check(ctx, email):
 @bot.command()
 async def request(ctx, *args):
     client = MongoClient(DBB)
-    db = client["dbot"]
+    db = client["test"]
     col = db["users"]
     email = args[0]
     reason = ""
@@ -433,66 +433,78 @@ async def delschedule(ctx, *args):
 
 @bot.command()
 async def schedule(ctx):
-    with open(day1) as f:
-        lines1 = [line.rstrip() for line in f]
-    with open(day2) as f:
-        lines2 = [line.rstrip() for line in f]  
-    with open(day3) as f:
-        lines3 = [line.rstrip() for line in f]   
-    page1 = discord.Embed(title="Day 1 - May 15", url="https://www.ruhacks.com", color=0xff40ff)
-    page1.set_author(name="RU Hacks", url="https://www.ruhacks.com")
-    page1.set_thumbnail(url="https://www.ruhacks.com/images/RU_White_RU.png")
-    for i in lines1:
-        i = i.split("|")
-        page1.add_field(name=i[1], value=i[0], inline=False)
-    page1.set_footer(text="Ru Hacks Bot, :)")
+    if(ctx.channel.id == 710238626965094462):
+        with open(day1) as f:
+            lines1 = [line.rstrip() for line in f]
+        with open(day2) as f:
+            lines2 = [line.rstrip() for line in f]  
+        with open(day3) as f:
+            lines3 = [line.rstrip() for line in f]   
+        page1 = discord.Embed(title="Day 1 - May 15", url="https://www.ruhacks.com", color=0xff40ff)
+        page1.set_author(name="RU Hacks", url="https://www.ruhacks.com")
+        page1.set_thumbnail(url="https://www.ruhacks.com/images/RU_White_RU.png")
+        for i in lines1:
+            i = i.split("|")
+            page1.add_field(name=i[1], value=i[0], inline=False)
+        page1.set_footer(text="Ru Hacks Bot, :)")
 
-    page2 = discord.Embed(title="Day 2 - May 16", url="https://www.ruhacks.com", color=0xff40ff)
-    page2.set_author(name="RU Hacks", url="https://www.ruhacks.com")
-    page2.set_thumbnail(url="https://www.ruhacks.com/images/RU_White_RU.png")
-    for i in lines2:
-        i = i.split("|")
-        page2.add_field(name=i[1], value=i[0], inline=False)
-    page2.set_footer(text="Ru Hacks Bot, :)")
+        page2 = discord.Embed(title="Day 2 - May 16", url="https://www.ruhacks.com", color=0xff40ff)
+        page2.set_author(name="RU Hacks", url="https://www.ruhacks.com")
+        page2.set_thumbnail(url="https://www.ruhacks.com/images/RU_White_RU.png")
+        for i in lines2:
+            i = i.split("|")
+            page2.add_field(name=i[1], value=i[0], inline=False)
+        page2.set_footer(text="Ru Hacks Bot, :)")
 
-    page3 = discord.Embed(title="Day 3 - May 17", url="https://www.ruhacks.com", color=0xff40ff)
-    page3.set_author(name="RU Hacks", url="https://www.ruhacks.com")
-    page3.set_thumbnail(url="https://www.ruhacks.com/images/RU_White_RU.png")
-    for i in lines3:
-        i = i.split("|")
-        page3.add_field(name=i[1], value=i[0], inline=False)
-    page3.set_footer(text="Ru Hacks Bot, :)")
+        page3 = discord.Embed(title="Day 3 - May 17", url="https://www.ruhacks.com", color=0xff40ff)
+        page3.set_author(name="RU Hacks", url="https://www.ruhacks.com")
+        page3.set_thumbnail(url="https://www.ruhacks.com/images/RU_White_RU.png")
+        for i in lines3:
+            i = i.split("|")
+            page3.add_field(name=i[1], value=i[0], inline=False)
+        page3.set_footer(text="Ru Hacks Bot, :)")
 
-    pages = [page1, page2, page3]
-    message = await ctx.send(embed=page1)
+        pages = [page1, page2, page3]
+        message = await ctx.send(embed=page1)
 
-    
-    await message.add_reaction('\u25c0')
-    await message.add_reaction('\u25b6')
-    await message.add_reaction('\u23ed')
+        
+        await message.add_reaction('\u25c0')
+        await message.add_reaction('\u25b6')
+        await message.add_reaction('\u23ed')
 
-    i = 0
-    emoji = ''
+        i = 0
+        emoji = ''
 
-    while True:
-        try:
-            reaction, user = await bot.wait_for('reaction_add', timeout=30.0) 
-            if user == ctx.author: 
-                emoji = str(reaction.emoji)
-                if emoji == '\u25c0':
-                    if i > 0:
-                        i -= 1
-                        await message.edit(embed=pages[i])
-                elif emoji == '\u25b6':
-                    if i < 2:
-                        i += 1
-                        await message.edit(embed=pages[i]) 
-            if client.user != user:
-                await message.remove_reaction(reaction, user) 
-        except asyncio.TimeoutError:
-            break
-    await message.clear_reactions()
+        while True:
+            try:
+                reaction, user = await bot.wait_for('reaction_add', timeout=30.0) 
+                if user == ctx.author: 
+                    emoji = str(reaction.emoji)
+                    if emoji == '\u25c0':
+                        if i > 0:
+                            i -= 1
+                            await message.edit(embed=pages[i])
+                    elif emoji == '\u25b6':
+                        if i < 2:
+                            i += 1
+                            await message.edit(embed=pages[i]) 
+                if client.user != user:
+                    await message.remove_reaction(reaction, user) 
+            except asyncio.TimeoutError:
+                break
+        await message.clear_reactions()
+    else:
+        await ctx.send("Invalid Channel")
 
-
+@bot.command()
+async def message_role(ctx, message):
+    for member in ctx.guild.members:
+        role_new = discord.utils.get(member.guild.roles, id=701904104334688426)
+        if role_new in member.roles:
+            try:
+                channel = await member.create_dm()
+                await channel.send("Your discord has not been found in our database. But do not worry! I got your back!\n This just means I need your email to verify you, by using the following command.\n\n$check <email> \n Example: $check ahmad@ryerson.ca")
+            except:
+                print(1111)
 
 bot.run(TOKEN)

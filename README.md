@@ -37,4 +37,23 @@ Bot Usage:
 		$request <EMAIL: required> <REASON: optional> (Pulls data info and sends to the verification channel for manual verification)
 ```
 
-This bot won't be changed or actively developed anytime soon. Maybe for RuHacks 2021, well actually hopefully not, we dont want COVID to last that long :P
+To use this bot you need your database in MongoDB. 
+
+The needed fields are the following:
+
+profile.hsStudent => bool
+
+profile.isMentor => bool
+
+confirmation.discord => Discord username with discrm. Ex 1337#0001
+
+
+
+
+
+
+When you have those fields you are set, just hop into bot.py, and replace the commented out tokens. And you should be set :)
+
+If you need any help, hmu on discord, 1337#0001
+
+

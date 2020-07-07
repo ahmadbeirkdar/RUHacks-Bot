@@ -1,5 +1,4 @@
 import os
-
 import discord
 import random
 import asyncio
@@ -8,6 +7,10 @@ from discord.utils import get
 from pymongo import MongoClient
 import logging
 logging.basicConfig(filename='app.log', filemode='a', format='%(name)s - %(levelname)s - %(message)s')
+
+#==============================================================================#
+#                               CONFIG                                         #
+#==============================================================================#
 
 # DISCORD BOT TOKEN:
 TOKEN = ''
@@ -21,18 +24,31 @@ COLL = "users"
 DISCORD_ID = 694334412858327123
 
 # CHANNELS
-LOG_CHANNEL = 706593175577428030
-VERIFY_CHANNEL = 704567590680264766
-TICKET_CHANNEL = 703675272666546226
-ARCHIVE_CHANNEL = 711388661677031495
+LOG_CHANNEL = 706593175577428030        # Channel where all join and verification logs will be posted
+VERIFY_CHANNEL = 704567590680264766     # Channel where manual verification requests are sent to be approved or denied
+TICKET_CHANNEL = 703675272666546226     # Channel Catergory where ticket channels will be created
+ARCHIVE_CHANNEL = 711388661677031495    # Channel Catergory where closed tickets will be moved to
 
 # ROLES
-NEW_ROLE = 701904104334688426
-HACKER_ROLE = 694558870990749717
-MENTOR_ROLE = 694558163034439732
-UNI_ROLE = 703643388162998332
-HS_ROLE = 695678770564300932
-ADMIN_ROLES = [694340202021519470,694558160312074280,695447042188771423,698220612962746408]
+NEW_ROLE = 701904104334688426           # The role which new users join with
+HACKER_ROLE = 694558870990749717        # Hacker role
+MENTOR_ROLE = 694558163034439732        # Mentor role
+UNI_ROLE = 703643388162998332           # University role
+HS_ROLE = 695678770564300932            # Highschool role
+ADMIN_ROLES = [694340202021519470,694558160312074280,695447042188771423,698220612962746408]     # Roles which have admin permissions
+
+#==============================================================================#
+#                               CONFIG END                                     #
+#==============================================================================#
+
+
+
+
+
+
+
+
+
 
 day1 = "day1"
 day2 = "day2"
@@ -61,7 +77,7 @@ async def on_member_join(member):
     flag = False
     for i in col.find():
         try:
-            if str(member) in i["confirmation"]["twitter"]:
+            if str(member) in i["confirmation"]["discord"]:
                 flag = True
                 await member.remove_roles(role_new)
                 roles = ""
@@ -246,7 +262,7 @@ async def check(ctx, email):
         flag = False
         for i in col.find():
             if email == i["email"]:
-                if(i["confirmation"]["twitter"] == ""):
+                if(i["confirmation"]["discord"] == ""):
                     flag = True
                     roles = ""
                     ctx1 = bot.get_guild(DISCORD_ID)
@@ -256,7 +272,7 @@ async def check(ctx, email):
                     role_mentor = discord.utils.get(ctx1.roles, id=MENTOR_ROLE)
                     role_uni = discord.utils.get(ctx1.roles, id=UNI_ROLE)
                     role_hs = discord.utils.get(ctx1.roles, id=HS_ROLE)
-                    col.update_one({"email": i["email"]}, {"$set": {"confirmation": {"twitter": str(ctx.author)}}})
+                    col.update_one({"email": i["email"]}, {"$set": {"confirmation": {"discord": str(ctx.author)}}})
                     await member.remove_roles(role_new)
                     try:
                         if (i["profile"]["hsStudent"] == True):
@@ -350,7 +366,7 @@ async def request(ctx, *args):
                 name = i["profile"]["name"]
             except: 
                 name = "NoNAME"
-            discord_id = i["confirmation"]["twitter"]
+            discord_id = i["confirmation"]["discord"]
             
             embed = discord.Embed(title="Verification Request", description=f"{ctx.author}", color=0x00ffff)
             embed.add_field(name="Name", value=f"{name}", inline=False)

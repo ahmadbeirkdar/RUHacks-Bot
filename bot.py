@@ -173,8 +173,8 @@ async def ticket(ctx, *args: discord.Member):
             for i in args:
                 await channel.set_permissions(i, read_messages=True, send_messages=True)
                 mentions += str(i.mention) + " "
-                hacker_names += str(i.name) + " "
-
+                hacker_names += str(i.name) + " & "
+            hacker_names = hacker_names[:-2]
             await channel.edit(topic = f"Mentor: {ctx.author.name} || Hackers: {hacker_names}")
 
             await channel.send(f"Ticket has been created by {ctx.author.mention}.")

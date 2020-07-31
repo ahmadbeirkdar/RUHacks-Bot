@@ -158,7 +158,7 @@ async def ticket(ctx, *args: discord.Member):
         perm_role.append(discord.utils.get(ctx.guild.roles, id=i))
     perm_role.append(discord.utils.get(ctx.guild.roles, id=MENTOR_ROLE))
     for i in perm_role:
-        if i in ctx.author.roles:
+        if i in ctx.author.roles and flag:
             num_tickets =  [line.rstrip('\n') for line in open("ticket")]
 
             args = list(args)
@@ -166,10 +166,12 @@ async def ticket(ctx, *args: discord.Member):
             category = bot.get_channel(TICKET_CHANNEL)
 
             channel = await ctx.guild.create_text_channel(rand, category=category)
+            await channel.set_permissions(ctx.author, read_messages=True, send_messages=True)
             mentions = ""
             for i in args:
                 await channel.set_permissions(i, read_messages=True, send_messages=True)
                 mentions += str(i.mention) + " "
+              
 
             await channel.send(f"Ticket has been created by {ctx.author.mention}.")
             await channel.send(f"Added {mentions}")

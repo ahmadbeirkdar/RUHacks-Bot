@@ -21,21 +21,21 @@ DB = "test"
 COLL = "users"
 
 # DISCORD SERVER ID
-DISCORD_ID = 694334412858327123
+DISCORD_ID = 719778731715198986
 
 # CHANNELS
-LOG_CHANNEL = 706593175577428030        # Channel where all join and verification logs will be posted
+LOG_CHANNEL = 738103615067127978        # Channel where all join and verification logs will be posted
 VERIFY_CHANNEL = 704567590680264766     # Channel where manual verification requests are sent to be approved or denied
-TICKET_CHANNEL = 703675272666546226     # Channel Catergory where ticket channels will be created
-ARCHIVE_CHANNEL = 711388661677031495    # Channel Catergory where closed tickets will be moved to
+TICKET_CHANNEL = 738643081540141137     # Channel Catergory where ticket channels will be created
+ARCHIVE_CHANNEL = 738643120912072704    # Channel Catergory where closed tickets will be moved to
 
 # ROLES
 NEW_ROLE = 701904104334688426           # The role which new users join with
 HACKER_ROLE = 694558870990749717        # Hacker role
-MENTOR_ROLE = 694558163034439732        # Mentor role
+MENTOR_ROLE = 738643229330898975        # Mentor role
 UNI_ROLE = 703643388162998332           # University role
 HS_ROLE = 695678770564300932            # Highschool role
-ADMIN_ROLES = [694340202021519470,694558160312074280,695447042188771423,698220612962746408]     # Roles which have admin permissions
+ADMIN_ROLES = [738105099737628712]     # Roles which have admin permissions
 
 #==============================================================================#
 #                               CONFIG END                                     #
@@ -61,93 +61,94 @@ bot = commands.Bot(command_prefix='$')
 async def on_ready():
     print(f'{bot.user} has connected to Discord!')
 
-@bot.event
-async def on_member_join(member):
-    client = MongoClient(DBB)
-    role_new = discord.utils.get(member.guild.roles, id=NEW_ROLE)
-    await member.add_roles(role_new)
-    await member.create_dm()
-    channel = bot.get_channel(LOG_CHANNEL)
-    await member.dm_channel.send(
-        f'Hi {member.name}, welcome to the Ru Hacks Discord.'
-    )
-    logging.warning(f'{member} joined')
-    db = client[DB]
-    col = db[COLL]
-    flag = False
-    for i in col.find():
-        try:
-            if str(member) in i["confirmation"]["discord"]:
-                flag = True
-                await member.remove_roles(role_new)
-                roles = ""
-                role_hacker = discord.utils.get(member.guild.roles, id=HACKER_ROLE)
-                role_mentor = discord.utils.get(member.guild.roles, id=MENTOR_ROLE)
-                role_uni = discord.utils.get(member.guild.roles, id=UNI_ROLE)
-                role_hs = discord.utils.get(member.guild.roles, id=HS_ROLE)
-                try:
-                    if (i["profile"]["hsStudent"] == True):
-                        await member.add_roles(role_hs)
-                        roles = "High School Student, "
-                    elif (i["profile"]["hsStudent"] == False):
-                        await member.add_roles(role_uni)
-                        roles = "University Student, "
-                except:
-                    await member.dm_channel.send(
-                    f'\nERROR: Contact an organizer  '
-                    )
-                    roles += "error"
-                try:
-                    if (i["profile"]["isMentor"] == True):
-                        await member.add_roles(role_mentor)
-                        roles += "and Mentor"
-                    elif (i["profile"]["isMentor"] == False):
-                        await member.add_roles(role_hacker)
-                        roles += "and Hacker"
-                except:
-                    await member.dm_channel.send(
-                    f'\nERROR: Contact an organizer  '
-                    )
-                    roles += "error"
-                try:
-                    name = i["profile"]["name"]
-                except: 
-                    name = "NoNAME"
-                try:
-                    email = i["email"]
-                except:
-                    email = "NOEMAIL"
+# Commented out for now
+# @bot.event
+# async def on_member_join(member):
+#     client = MongoClient(DBB)
+#     role_new = discord.utils.get(member.guild.roles, id=NEW_ROLE)
+#     await member.add_roles(role_new)
+#     await member.create_dm()
+#     channel = bot.get_channel(LOG_CHANNEL)
+#     await member.dm_channel.send(
+#         f'Hi {member.name}, welcome to the Ru Hacks Discord.'
+#     )
+#     logging.warning(f'{member} joined')
+#     db = client[DB]
+#     col = db[COLL]
+#     flag = False
+#     for i in col.find():
+#         try:
+#             if str(member) in i["confirmation"]["discord"]:
+#                 flag = True
+#                 await member.remove_roles(role_new)
+#                 roles = ""
+#                 role_hacker = discord.utils.get(member.guild.roles, id=HACKER_ROLE)
+#                 role_mentor = discord.utils.get(member.guild.roles, id=MENTOR_ROLE)
+#                 role_uni = discord.utils.get(member.guild.roles, id=UNI_ROLE)
+#                 role_hs = discord.utils.get(member.guild.roles, id=HS_ROLE)
+#                 try:
+#                     if (i["profile"]["hsStudent"] == True):
+#                         await member.add_roles(role_hs)
+#                         roles = "High School Student, "
+#                     elif (i["profile"]["hsStudent"] == False):
+#                         await member.add_roles(role_uni)
+#                         roles = "University Student, "
+#                 except:
+#                     await member.dm_channel.send(
+#                     f'\nERROR: Contact an organizer  '
+#                     )
+#                     roles += "error"
+#                 try:
+#                     if (i["profile"]["isMentor"] == True):
+#                         await member.add_roles(role_mentor)
+#                         roles += "and Mentor"
+#                     elif (i["profile"]["isMentor"] == False):
+#                         await member.add_roles(role_hacker)
+#                         roles += "and Hacker"
+#                 except:
+#                     await member.dm_channel.send(
+#                     f'\nERROR: Contact an organizer  '
+#                     )
+#                     roles += "error"
+#                 try:
+#                     name = i["profile"]["name"]
+#                 except: 
+#                     name = "NoNAME"
+#                 try:
+#                     email = i["email"]
+#                 except:
+#                     email = "NOEMAIL"
 
-                fullname = name.split()
-                if len(fullname) > 1:
-                    firstname = fullname[0]
-                    lastname = fullname[1][0]
-                    nick = firstname + " " + lastname
-                else:
-                    firstname = fullname[0]
-                    nick = firstname
+#                 fullname = name.split()
+#                 if len(fullname) > 1:
+#                     firstname = fullname[0]
+#                     lastname = fullname[1][0]
+#                     nick = firstname + " " + lastname
+#                 else:
+#                     firstname = fullname[0]
+#                     nick = firstname
                 
-                embed = discord.Embed(title="Join Log", description=f"{str(member)}", color=0x00ffff)
-                embed.add_field(name="Name", value=f"{name}", inline=False)
-                embed.add_field(name="Email", value=f"{email}", inline=False)
-                embed.add_field(name="User Roles", value=f"{roles}", inline=False)
+#                 embed = discord.Embed(title="Join Log", description=f"{str(member)}", color=0x00ffff)
+#                 embed.add_field(name="Name", value=f"{name}", inline=False)
+#                 embed.add_field(name="Email", value=f"{email}", inline=False)
+#                 embed.add_field(name="User Roles", value=f"{roles}", inline=False)
                     
-                await channel.send(embed=embed)
-                await member.dm_channel.send(
-                f'\nYou have been given the following roles:\n\n{roles}'
-                )
+#                 await channel.send(embed=embed)
+#                 await member.dm_channel.send(
+#                 f'\nYou have been given the following roles:\n\n{roles}'
+#                 )
                 
-                await member.edit(nick=nick)
-                logging.warning(f'{member} - join event, {roles}, {name}, {email}')
-                break
-        except:
-            print("Error in join event")
-            logging.warning(f'{member} - join event error')
-    if flag == False:
-        await member.dm_channel.send(
-        f'Your discord has not been found in our database. But do not worry! I got your back!\n This just means I need your email to verify you, by using the following command.\n\n$check <email> \n Example: $check ahmad@ryerson.ca'
-        )
-        logging.warning(f'{member} - join event not found')
+#                 await member.edit(nick=nick)
+#                 logging.warning(f'{member} - join event, {roles}, {name}, {email}')
+#                 break
+#         except:
+#             print("Error in join event")
+#             logging.warning(f'{member} - join event error')
+#     if flag == False:
+#         await member.dm_channel.send(
+#         f'Your discord has not been found in our database. But do not worry! I got your back!\n This just means I need your email to verify you, by using the following command.\n\n$check <email> \n Example: $check ahmad@ryerson.ca'
+#         )
+#         logging.warning(f'{member} - join event not found')
             
 
 @bot.command()
@@ -162,16 +163,19 @@ async def ticket(ctx, *args: discord.Member):
             num_tickets =  [line.rstrip('\n') for line in open("ticket")]
 
             args = list(args)
-            rand = "ticket"+"-"+str(len(num_tickets))
+            rand = "ticket"+"-"+str(len(num_tickets))+"-"+str(ctx.author.name)
             category = bot.get_channel(TICKET_CHANNEL)
 
             channel = await ctx.guild.create_text_channel(rand, category=category)
             await channel.set_permissions(ctx.author, read_messages=True, send_messages=True)
             mentions = ""
+            hacker_names = ""
             for i in args:
                 await channel.set_permissions(i, read_messages=True, send_messages=True)
                 mentions += str(i.mention) + " "
-              
+                hacker_names += str(i.name) + " "
+
+            await channel.edit(topic = f"Mentor: {ctx.author.name} || Hackers: {hacker_names}")
 
             await channel.send(f"Ticket has been created by {ctx.author.mention}.")
             await channel.send(f"Added {mentions}")
@@ -557,4 +561,4 @@ async def schedule(ctx):
 #             except:
 #                 print(1111)
 
-# bot.run(TOKEN)
+bot.run(TOKEN)
